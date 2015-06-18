@@ -1,0 +1,23 @@
+server {
+        listen 80;
+        root /var/www;
+        index index.html;
+
+   ##Start mobile request code
+        set $mobile-request false;
+
+        if ($http_user_agent ~* '(Mobile|WebOS)') {
+          set $mobile_request true;
+        }
+
+        if ($mobile_request = true) {
+        return 403;
+        }
+
+        location /distil/ {
+                proxy_pass http://www.distilnetworks.com/;
+        }
+        location / {
+                deny 192.225.213.20;
+        }
+}
